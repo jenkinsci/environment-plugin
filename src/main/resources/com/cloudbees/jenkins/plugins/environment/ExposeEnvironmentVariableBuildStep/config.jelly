@@ -1,0 +1,7 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:f="/lib/form">
+
+    <f:entry title="Environment Variables" >
+        <f:repeatableHeteroProperty field="producers" targetType="com.cloudbees.jenkins.plugins.environment.producers.EnvironmentProducer" oneEach="true" />
+    </f:entry>
+
+</j:jelly>

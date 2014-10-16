@@ -1,0 +1,27 @@
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
+
+  <f:entry field="value">
+      <f:textarea/>
+  </f:entry>
+
+      <!--
+  <table width="100%" border="1">
+      <tr>
+          <th width="20%">name</th>
+          <th width="80%">value</th>
+          <th></th>
+      </tr>
+    <f:repeatable field="pairs" items="${instance.pairs}" var="instance" noAddButton="true">
+      <tr>
+          <td><f:textbox field="key" /></td>
+          <td><f:textbox field="value" /></td>
+          <td><f:repeatableDeleteButton /></td>
+      </tr>
+      <tr colspan="3">
+        <input type="button" value="${%Add}" class="repeatable-add show-if-last" />
+      </tr>
+    </f:repeatable>
+  </table>
+    -->
+
+</j:jelly>
