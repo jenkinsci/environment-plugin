@@ -1,6 +1,7 @@
 package com.cloudbees.jenkins.plugins.environment.producers;
 
 import hudson.ExtensionPoint;
+import hudson.model.AbstractBuild;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Environment;
 import hudson.model.Run;
@@ -16,6 +17,9 @@ public abstract class EnvironmentProducer extends AbstractDescribableImpl<Enviro
        implements ExtensionPoint {
 
 
-    public abstract Environment buildEnvironmentFor(Run run, TaskListener listener) throws IOException, InterruptedException;
+    public Environment buildEnvironmentFor(AbstractBuild build, TaskListener listener) throws IOException, InterruptedException {
+        throw new UnsupportedOperationException("Not implemented");
+    }
 
+    public abstract String getDescription();
 }

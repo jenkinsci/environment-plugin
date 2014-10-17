@@ -4,7 +4,6 @@ import hudson.Extension;
 import hudson.FilePath;
 import hudson.model.AbstractBuild;
 import hudson.model.Environment;
-import hudson.model.Run;
 import hudson.model.TaskListener;
 import hudson.remoting.VirtualChannel;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -39,9 +38,9 @@ public class PropertiesFileProducer extends EnvironmentProducer {
     }
 
     @Override
-    public Environment buildEnvironmentFor(Run run, TaskListener listener) throws IOException, InterruptedException {
+    public Environment buildEnvironmentFor(AbstractBuild build, TaskListener listener) throws IOException, InterruptedException {
 
-        final Properties p = load(run, listener);
+        final Properties p = load(build, listener);
 
         return new Environment() {
             @Override
@@ -51,12 +50,11 @@ public class PropertiesFileProducer extends EnvironmentProducer {
         };
     }
 
-    private Properties load(Run run, TaskListener listener) throws IOException, InterruptedException {
+    private Properties load(AbstractBuild build, TaskListener listener) throws IOException, InterruptedException {
         if (onMaster) {
             // TODO validate path is absolute
             return load(new File(path));
         }
-        AbstractBuild build = (AbstractBuild) run;
         return build.getWorkspace().child(path).act(new FilePath.FileCallable<Properties>() {
             public Properties invoke(File f, VirtualChannel channel) throws IOException, InterruptedException {
                 return load(f);
@@ -75,7 +73,7 @@ public class PropertiesFileProducer extends EnvironmentProducer {
 
         @Override
         public String getDisplayName() {
-            return "from file";
+            return "Properties file";
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.cloudbees.jenkins.plugins.environment.producers;
 
 import hudson.Extension;
+import hudson.model.AbstractBuild;
 import hudson.model.Environment;
-import hudson.model.Run;
 import hudson.model.TaskListener;
 import org.kohsuke.stapler.DataBoundConstructor;
 
@@ -37,7 +37,7 @@ public class KeyValueProducer extends EnvironmentProducer {
     }
 
     @Override
-    public Environment buildEnvironmentFor(Run run, TaskListener listener) {
+    public Environment buildEnvironmentFor(AbstractBuild build, TaskListener listener) {
         return new Environment() {
             @Override
             public void buildEnvVars(Map env) { // intentionaly not  parameterized, as Properties is not a Map<String,String> for some odd reason
