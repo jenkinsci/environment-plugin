@@ -29,12 +29,16 @@ public class AbstractEnvironmentBuildWrapper extends BuildWrapper {
 
 
     protected Collection<hudson.model.Environment> prepareEnvironments(AbstractBuild build, BuildListener listener) throws IOException, InterruptedException {
-        listener.getLogger().println("Prepare environment for the build");
+        listener.getLogger().println(getDescription());
         final Collection<hudson.model.Environment> envs = new ArrayList<hudson.model.Environment>();
         for (EnvironmentProducer producer : producers) {
             listener.getLogger().println("  - inject environment from " + producer.getDescription());
             envs.add(producer.buildEnvironmentFor(build, listener));
         }
         return envs;
+    }
+
+    protected String getDescription() {
+        return "Prepare environment for the build";
     }
 }

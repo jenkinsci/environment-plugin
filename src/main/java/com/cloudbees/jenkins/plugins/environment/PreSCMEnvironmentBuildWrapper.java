@@ -6,7 +6,6 @@ import hudson.Launcher;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.BuildListener;
-import hudson.model.Environment;
 import hudson.tasks.BuildWrapperDescriptor;
 import org.kohsuke.stapler.DataBoundConstructor;
 
@@ -24,8 +23,18 @@ public class PreSCMEnvironmentBuildWrapper extends AbstractEnvironmentBuildWrapp
     }
 
     @Override
+    public Environment setUp(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException {
+        return new Environment() {}; // Nop
+    }
+
+    @Override
     public void preCheckout(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException {
         build.getEnvironments().addAll(prepareEnvironments(build, listener));
+    }
+
+    @Override
+    protected String getDescription() {
+        return super.getDescription() + " (before SCM checkout)";
     }
 
     @Extension(ordinal = 113)
