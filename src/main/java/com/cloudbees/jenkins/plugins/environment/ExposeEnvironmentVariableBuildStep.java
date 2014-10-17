@@ -13,6 +13,8 @@ import hudson.tasks.BuildStepDescriptor;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -36,12 +38,21 @@ public class ExposeEnvironmentVariableBuildStep extends Builder {
 
     @Override
     public boolean perform(final AbstractBuild build, Launcher launcher, final BuildListener listener) {
-        build.getEnvironments().addAll(
-            Collections2.transform(producers, new Function<EnvironmentProducer, Environment>() {
-                public Environment apply(@Nullable EnvironmentProducer producer) {
-                    return producer.buildEnvironmentFor(build, listener);
-                }
-            }));
+        Collection<Environment> envs = new ArrayList<Environment>();
+        for (EnvironmentProducer producer : producers) {
+            try {
+                producer.buildEnvironmentFor(build, listener);
+            } catch (IOException e) {
+                listener.error("Failed to prepare environment : {}", e);
+                e.printStackTrace(listener.getLogger());
+                return false;
+            } catch (InterruptedException e) {
+                listener.error("Failed to prepare environment : {}", e);
+                e.printStackTrace(listener.getLogger());
+                return false;
+            }
+        }
+        build.getEnvironments().addAll(envs);
         return true;
     }
 

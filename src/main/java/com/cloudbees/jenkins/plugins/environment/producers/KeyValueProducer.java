@@ -17,22 +17,19 @@ import java.util.Properties;
  */
 public class KeyValueProducer extends EnvironmentProducer {
 
-    private String value;
-
-    // TODO expose the key/value pairs as an editable table in UI. Can't get it to work yet, will look into this later.
+    private final String value;
 
     private final Properties properties;
 
+
+    // TODO expose the key/value pairs as an editable table in UI. Can't get it to work yet, will look into this later.
+
     @DataBoundConstructor
     public KeyValueProducer(String value) throws IOException {
+        super();
         this.value = value;
         this.properties = new Properties();
         properties.load(new StringReader(value));
-
-    }
-
-    public String getValue() {
-        return value;
     }
 
     public Properties getProperties() {
@@ -43,10 +40,14 @@ public class KeyValueProducer extends EnvironmentProducer {
     public Environment buildEnvironmentFor(Run run, TaskListener listener) {
         return new Environment() {
             @Override
-            public void buildEnvVars(Map env) { // intentionaly unparameterized, as Properties is not a Map<String,String> for some odd reason
+            public void buildEnvVars(Map env) { // intentionaly not  parameterized, as Properties is not a Map<String,String> for some odd reason
                 env.putAll(properties);
             }
         };
+    }
+
+    public String getValue() {
+        return value;
     }
 
     @Extension
@@ -54,7 +55,7 @@ public class KeyValueProducer extends EnvironmentProducer {
 
         @Override
         public String getDisplayName() {
-            return "key / values";
+            return "set of key=value";
         }
     }
 }

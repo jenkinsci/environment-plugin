@@ -6,6 +6,8 @@ import hudson.model.Environment;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 
+import java.io.IOException;
+
 /**
  * Extension point for components who define environment variables to be set during the build.
  * @author <a href="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
@@ -14,6 +16,6 @@ public abstract class EnvironmentProducer extends AbstractDescribableImpl<Enviro
        implements ExtensionPoint {
 
 
-    public abstract Environment buildEnvironmentFor(Run run, TaskListener listener);
+    public abstract Environment buildEnvironmentFor(Run run, TaskListener listener) throws IOException, InterruptedException;
 
 }
