@@ -24,33 +24,19 @@ import java.util.Map;
  *
  * @author <a href="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
  */
-public class EnvironmentBuildWrapper extends BuildWrapper {
-
-    private final Collection<EnvironmentProducer> producers;
+public class EnvironmentBuildWrapper extends AbstractEnvironmentBuildWrapper {
 
     @DataBoundConstructor
     public EnvironmentBuildWrapper(Collection<EnvironmentProducer> producers) {
-        this.producers = producers;
-    }
-
-    public Collection<EnvironmentProducer> getProducers() {
-        return producers;
+        super(producers);
     }
 
     @Override
     public Environment setUp(final AbstractBuild build, Launcher launcher, final BuildListener listener) throws IOException, InterruptedException {
-
-        listener.getLogger().println("Prepare environment for the build");
-        final Collection<hudson.model.Environment> envs = new ArrayList<hudson.model.Environment>();
-        for (EnvironmentProducer producer : producers) {
-            listener.getLogger().println("  - inject environment from " + producer.getDescription());
-            envs.add(producer.buildEnvironmentFor(build, listener));
-        }
-
-        return new EnvironmentImpl(envs);
+        return new EnvironmentImpl(prepareEnvironments(build, listener));
     }
 
-    @Extension
+    @Extension(ordinal = 109)
     public static final class DescriptorImpl extends BuildWrapperDescriptor {
 
         @Override
