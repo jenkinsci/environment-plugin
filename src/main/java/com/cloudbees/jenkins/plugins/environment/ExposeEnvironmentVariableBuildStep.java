@@ -8,6 +8,7 @@ import hudson.model.Environment;
 import hudson.model.AbstractBuild;
 import hudson.model.BuildListener;
 import hudson.model.AbstractProject;
+import hudson.model.EnvironmentList;
 import hudson.tasks.Builder;
 import hudson.tasks.BuildStepDescriptor;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -38,10 +39,10 @@ public class ExposeEnvironmentVariableBuildStep extends Builder {
 
     @Override
     public boolean perform(final AbstractBuild build, Launcher launcher, final BuildListener listener) {
-        Collection<Environment> envs = new ArrayList<Environment>();
+
         for (EnvironmentProducer producer : producers) {
             try {
-                producer.buildEnvironmentFor(build, listener);
+                build.getEnvironments().add(producer.buildEnvironmentFor(build, listener));
             } catch (IOException e) {
                 listener.error("Failed to prepare environment : {}", e);
                 e.printStackTrace(listener.getLogger());
@@ -52,7 +53,6 @@ public class ExposeEnvironmentVariableBuildStep extends Builder {
                 return false;
             }
         }
-        build.getEnvironments().addAll(envs);
         return true;
     }
 
