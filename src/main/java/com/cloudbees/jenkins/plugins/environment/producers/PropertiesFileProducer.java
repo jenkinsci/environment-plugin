@@ -50,6 +50,12 @@ public class PropertiesFileProducer extends EnvironmentProducer {
         };
     }
 
+    @Override
+    public String getDescription() {
+        return "Properties file " + path;
+    }
+
+
     private Properties load(AbstractBuild build, TaskListener listener) throws IOException, InterruptedException {
         if (onMaster) {
             // TODO validate path is absolute

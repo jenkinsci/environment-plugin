@@ -46,6 +46,11 @@ public class KeyValueProducer extends EnvironmentProducer {
         };
     }
 
+    @Override
+    public String getDescription() {
+        return "Key=Value pairs";
+    }
+
     public String getValue() {
         return value;
     }
